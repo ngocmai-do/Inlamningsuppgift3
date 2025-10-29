@@ -1,7 +1,12 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
-public class Spel extends JFrame {
+public class Spel extends JFrame implements ActionListener {
     private JPanel controlPanel = new JPanel();
     private JButton newGameButton = new JButton("New game");
     private JLabel winGameLabel = new JLabel(" ");
@@ -28,24 +33,9 @@ public class Spel extends JFrame {
         controlPanel.setLayout(new FlowLayout());
         controlPanel.add(newGameButton);
         controlPanel.add(winGameLabel);
+        newGameButton.addActionListener(this);
 
         gamePanel.setLayout(new GridLayout(4,4));
-        gamePanel.add(button1);
-        gamePanel.add(button2);
-        gamePanel.add(button3);
-        gamePanel.add(button4);
-        gamePanel.add(button5);
-        gamePanel.add(button6);
-        gamePanel.add(button7);
-        gamePanel.add(button8);
-        gamePanel.add(button9);
-        gamePanel.add(button10);
-        gamePanel.add(button11);
-        gamePanel.add(button12);
-        gamePanel.add(button13);
-        gamePanel.add(button14);
-        gamePanel.add(button15);
-        gamePanel.add(blankButton);
 
         add(controlPanel, BorderLayout.NORTH);
         add(gamePanel, BorderLayout.CENTER);
@@ -56,6 +46,22 @@ public class Spel extends JFrame {
         setVisible(true);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
     }
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if (e.getSource() == newGameButton) {
+            List<JButton> buttonList = new ArrayList<>(List.of(button1, button2, button3, button4, button5, button6, button7, button8,
+                    button9, button10, button11, button12, button13, button14, button15, blankButton));
+            Collections.shuffle(buttonList);
+            for (JButton b : buttonList) {
+                gamePanel.add(b);
+            }
+            gamePanel.revalidate();
+            gamePanel.repaint();
+        }
+    }
+
 
     void main() {}
+
+
 }
