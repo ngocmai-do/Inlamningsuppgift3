@@ -42,6 +42,7 @@ public class Spel extends JFrame implements ActionListener {
         setVisible(true);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
     }
+    
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == newGameButton) {
@@ -56,6 +57,7 @@ public class Spel extends JFrame implements ActionListener {
     // this method generate a new game with click of "new game" button, list of buttons is used here together with shuffle to create random order or buttons
     public void gameGenerate() {
         Collections.shuffle(buttonList);
+        gamePanel.removeAll();
         for (JButton b : buttonList) {
             gamePanel.add(b);
         }
@@ -71,114 +73,50 @@ public class Spel extends JFrame implements ActionListener {
     public void movingButton(JButton selectedButton) {
 
         int buttonIndex = buttonList.indexOf(selectedButton);
+        int blankButtonIndex = buttonList.indexOf(blankButton);
 
-        if (buttonIndex == 0) {
-            if (buttonList.get(buttonIndex + 1) == blankButton) {
-                buttonList.set(buttonIndex, blankButton);
-                buttonList.set(buttonIndex + 1, selectedButton);
-            } else if (buttonList.get(buttonIndex + 4) == blankButton) {
-                buttonList.set(buttonIndex, blankButton);
-                buttonList.set(buttonIndex + 4, selectedButton);
-            }
+        if (buttonIndex == 0 && (buttonIndex + 1 == blankButtonIndex || buttonIndex + 4 == blankButtonIndex)) {
+            Collections.swap(buttonList, buttonIndex, blankButtonIndex);
         }
 
-        else if (buttonIndex == 3) {
-            if (buttonList.get(buttonIndex - 1) == blankButton) {
-                buttonList.set(buttonIndex, blankButton);
-                buttonList.set(buttonIndex - 1, selectedButton);
-            } else if (buttonList.get(buttonIndex + 4) == blankButton) {
-                buttonList.set(buttonIndex, blankButton);
-                buttonList.set(buttonIndex + 4, selectedButton);
-            }
+        else if (buttonIndex == 3 && (buttonIndex - 1 == blankButtonIndex || buttonIndex + 4 == blankButtonIndex)) {
+            Collections.swap(buttonList, buttonIndex, blankButtonIndex);
         }
 
-        else if (buttonIndex == 12) {
-            if (buttonList.get(buttonIndex + 1) == blankButton) {
-                buttonList.set(buttonIndex, blankButton);
-                buttonList.set(buttonIndex + 1, selectedButton);
-            } else if (buttonList.get(buttonIndex - 4) == blankButton) {
-                buttonList.set(buttonIndex, blankButton);
-                buttonList.set(buttonIndex - 4, selectedButton);
-            }
+        else if (buttonIndex == 12 && (buttonIndex + 1 == blankButtonIndex || buttonIndex - 4 == blankButtonIndex)) {
+            Collections.swap(buttonList, buttonIndex, blankButtonIndex);
         }
 
-        else if (buttonIndex == 15) {
-            if (buttonList.get(buttonIndex - 1) == blankButton) {
-                buttonList.set(buttonIndex, blankButton);
-                buttonList.set(buttonIndex - 1, selectedButton);
-            } else if (buttonList.get(buttonIndex - 4) == blankButton) {
-                buttonList.set(buttonIndex, blankButton);
-                buttonList.set(buttonIndex - 4, selectedButton);
-            }
+        else if (buttonIndex == 15 && (buttonIndex - 1 == blankButtonIndex || buttonIndex - 4 == blankButtonIndex)) {
+            Collections.swap(buttonList, buttonIndex, blankButtonIndex);
         }
 
-        else if (buttonIndex == 1 || buttonIndex == 2) {
-            if (buttonList.get(buttonIndex + 1) == blankButton) {
-                buttonList.set(buttonIndex, blankButton);
-                buttonList.set(buttonIndex + 1, selectedButton);
-            } else if (buttonList.get(buttonIndex + 4) == blankButton) {
-                buttonList.set(buttonIndex, blankButton);
-                buttonList.set(buttonIndex + 4, selectedButton);
-            } else if (buttonList.get(buttonIndex - 1) == blankButton) {
-                buttonList.set(buttonIndex, blankButton);
-                buttonList.set(buttonIndex - 1, selectedButton);
-            }
+        else if ((buttonIndex == 1 || buttonIndex == 2) &&
+                (buttonIndex + 1 == blankButtonIndex || buttonIndex + 4 == blankButtonIndex || buttonIndex - 1 == blankButtonIndex)) {
+            Collections.swap(buttonList, buttonIndex, blankButtonIndex);
         }
 
-        else if (buttonIndex == 4 || buttonIndex == 8) {
-            if (buttonList.get(buttonIndex + 1) == blankButton) {
-                buttonList.set(buttonIndex, blankButton);
-                buttonList.set(buttonIndex + 1, selectedButton);
-            } else if (buttonList.get(buttonIndex + 4) == blankButton) {
-                buttonList.set(buttonIndex, blankButton);
-                buttonList.set(buttonIndex + 4, selectedButton);
-            } else if (buttonList.get(buttonIndex - 4) == blankButton) {
-                buttonList.set(buttonIndex, blankButton);
-                buttonList.set(buttonIndex - 4, selectedButton);
-            }
+        else if ((buttonIndex == 4 || buttonIndex == 8) &&
+                (buttonIndex + 1 == blankButtonIndex || buttonIndex + 4 == blankButtonIndex || buttonIndex - 4 == blankButtonIndex)) {
+            Collections.swap(buttonList, buttonIndex, blankButtonIndex);
         }
 
-        else if (buttonIndex == 7 || buttonIndex == 11) {
-            if (buttonList.get(buttonIndex - 1) == blankButton) {
-                buttonList.set(buttonIndex, blankButton);
-                buttonList.set(buttonIndex - 1, selectedButton);
-            } else if (buttonList.get(buttonIndex + 4) == blankButton) {
-                buttonList.set(buttonIndex, blankButton);
-                buttonList.set(buttonIndex + 4, selectedButton);
-            } else if (buttonList.get(buttonIndex - 4) == blankButton) {
-                buttonList.set(buttonIndex, blankButton);
-                buttonList.set(buttonIndex - 4, selectedButton);
-            }
+        else if ((buttonIndex == 7 || buttonIndex == 11) &&
+                (buttonIndex - 1 == blankButtonIndex || buttonIndex + 4 == blankButtonIndex || buttonIndex - 4 == blankButtonIndex)) {
+            Collections.swap(buttonList, buttonIndex, blankButtonIndex);
         }
 
-        else if (buttonIndex == 13 || buttonIndex == 14) {
-            if (buttonList.get(buttonIndex - 1) == blankButton) {
-                buttonList.set(buttonIndex, blankButton);
-                buttonList.set(buttonIndex - 1, selectedButton);
-            } else if (buttonList.get(buttonIndex + 1) == blankButton) {
-                buttonList.set(buttonIndex, blankButton);
-                buttonList.set(buttonIndex + 1, selectedButton);
-            } else if (buttonList.get(buttonIndex - 4) == blankButton) {
-                buttonList.set(buttonIndex, blankButton);
-                buttonList.set(buttonIndex - 4, selectedButton);
-            }
+        else if ((buttonIndex == 13 || buttonIndex == 14) &&
+                (buttonIndex - 1 == blankButtonIndex || buttonIndex + 1 == blankButtonIndex || buttonIndex - 4 == blankButtonIndex)) {
+            Collections.swap(buttonList, buttonIndex, blankButtonIndex);
         }
 
-        else {
-            if (buttonList.get(buttonIndex + 1) == blankButton) {
-                buttonList.set(buttonIndex, blankButton);
-                buttonList.set(buttonIndex + 1, selectedButton);
-            } else if (buttonList.get(buttonIndex - 1) == blankButton) {
-                buttonList.set(buttonIndex, blankButton);
-                buttonList.set(buttonIndex - 1, selectedButton);
-            } else if (buttonList.get(buttonIndex + 4) == blankButton) {
-                buttonList.set(buttonIndex, blankButton);
-                buttonList.set(buttonIndex + 4, selectedButton);
-            } else if (buttonList.get(buttonIndex - 4) == blankButton) {
-                buttonList.set(buttonIndex, blankButton);
-                buttonList.set(buttonIndex - 4, selectedButton);
-            }
+        else if ((buttonIndex == 5 || buttonIndex == 6 || buttonIndex == 9 || buttonIndex == 10) &&
+                (buttonIndex - 1 == blankButtonIndex || buttonIndex + 1 == blankButtonIndex || buttonIndex + 4 == blankButtonIndex || buttonIndex - 4 == blankButtonIndex)) {
+                Collections.swap(buttonList, buttonIndex, blankButtonIndex);
         }
+
+        gamePanel.removeAll();
 
         for (JButton b : buttonList) {
             gamePanel.add(b);
