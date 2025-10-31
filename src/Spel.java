@@ -31,7 +31,7 @@ public class Spel extends JFrame implements ActionListener {
             button.addActionListener(this);
             buttonList.add(button);
         }
-        buttonList.add(blankButton);
+        buttonList.add(blankButton);   //blank button is added to list manually
 
 
         add(controlPanel, BorderLayout.NORTH);
@@ -42,7 +42,7 @@ public class Spel extends JFrame implements ActionListener {
         setVisible(true);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
     }
-    
+
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == newGameButton) {
@@ -65,10 +65,10 @@ public class Spel extends JFrame implements ActionListener {
         gamePanel.repaint();
     }
 
-    // this "moving-Button" method control the movement of each number button, which take the index of the clicked button and check the button that located next to it
-    // if there is a blank space (blank button) next to it then the buttons will swap places
+    // this "moving-Button" method control the movement of each number button, which take the index of the clicked button and check index of the surrounding buttons
+    // if there is a blank space (blank button) next to it then the clicked button and the blank button will swap places
     // a button can only move up, down, left or right which its index corresponds with index of clicked button plus/minus 4 or 1
-    // notes: there is special cases with button that is in the 4 corners and 4 sides of the game so the code is also separated into different else-if cases,
+    // notes: there is special cases with buttons that is in the 4 corners and 4 sides of the game so the code is also separated into different else-if for those cases,
     // otherwise we will have problem with button moves incorrectly or out-of-bound problems
     public void movingButton(JButton selectedButton) {
 
@@ -113,7 +113,7 @@ public class Spel extends JFrame implements ActionListener {
 
         else if ((buttonIndex == 5 || buttonIndex == 6 || buttonIndex == 9 || buttonIndex == 10) &&
                 (buttonIndex - 1 == blankButtonIndex || buttonIndex + 1 == blankButtonIndex || buttonIndex + 4 == blankButtonIndex || buttonIndex - 4 == blankButtonIndex)) {
-                Collections.swap(buttonList, buttonIndex, blankButtonIndex);
+            Collections.swap(buttonList, buttonIndex, blankButtonIndex);
         }
 
         gamePanel.removeAll();
