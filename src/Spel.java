@@ -9,6 +9,7 @@ import java.util.List;
 public class Spel extends JFrame implements ActionListener {
     private JPanel controlPanel = new JPanel();
     private JButton newGameButton = new JButton("New game");
+    private JButton winGameStimulation = new JButton("Secret button");
     private JLabel winGameLabel = new JLabel(" ");
 
     private JPanel gamePanel = new JPanel();
@@ -19,8 +20,9 @@ public class Spel extends JFrame implements ActionListener {
 
 
     public Spel() {
-        controlPanel.setLayout(new FlowLayout());
+        controlPanel.setLayout(new GridLayout(1,3));
         controlPanel.add(newGameButton);
+        controlPanel.add(winGameStimulation);
         controlPanel.add(winGameLabel);
         newGameButton.addActionListener(this);
 
@@ -65,11 +67,7 @@ public class Spel extends JFrame implements ActionListener {
         gamePanel.repaint();
     }
 
-    // this "moving-Button" method control the movement of each number button, which take the index of the clicked button and check the button that located next to it
-    // if there is a blank space (blank button) next to it then the buttons will swap places
-    // a button can only move up, down, left or right which its index corresponds with index of clicked button plus/minus 4 or 1
-    // notes: there is special cases with button that is in the 4 corners and 4 sides of the game so the code is also separated into different else-if cases,
-    // otherwise we will have problem with button moves incorrectly or out-of-bound problems
+
     public void movingButton(JButton selectedButton) {
 
         int buttonIndex = buttonList.indexOf(selectedButton);
