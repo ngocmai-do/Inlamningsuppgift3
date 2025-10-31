@@ -12,26 +12,11 @@ public class Spel extends JFrame implements ActionListener {
     private JLabel winGameLabel = new JLabel(" ");
 
     private JPanel gamePanel = new JPanel();
-    private JButton button1 = new JButton("1");
-    private JButton button2 = new JButton("2");
-    private JButton button3 = new JButton("3");
-    private JButton button4 = new JButton("4");
-    private JButton button5 = new JButton("5");
-    private JButton button6 = new JButton("6");
-    private JButton button7 = new JButton("7");
-    private JButton button8 = new JButton("8");
-    private JButton button9 = new JButton("9");
-    private JButton button10 = new JButton("10");
-    private JButton button11 = new JButton("11");
-    private JButton button12 = new JButton("12");
-    private JButton button13 = new JButton("13");
-    private JButton button14 = new JButton("14");
-    private JButton button15 = new JButton("15");
     private JButton blankButton = new JButton("");
 
-    // all buttons within the game is saved in a list for ease of generating game and control the movement of each button
-    List<JButton> buttonList = new ArrayList<>(List.of(button1, button2, button3, button4, button5, button6, button7, button8,
-            button9, button10, button11, button12, button13, button14, button15, blankButton));
+    // all buttons within the game is saved in this button list for ease of generating game and control the movement of each button
+    List<JButton> buttonList = new ArrayList<>();
+
 
     public Spel() {
         controlPanel.setLayout(new FlowLayout());
@@ -40,21 +25,13 @@ public class Spel extends JFrame implements ActionListener {
         newGameButton.addActionListener(this);
 
         gamePanel.setLayout(new GridLayout(4,4));
-        button1.addActionListener(this);
-        button2.addActionListener(this);
-        button3.addActionListener(this);
-        button4.addActionListener(this);
-        button5.addActionListener(this);
-        button6.addActionListener(this);
-        button7.addActionListener(this);
-        button8.addActionListener(this);
-        button9.addActionListener(this);
-        button10.addActionListener(this);
-        button11.addActionListener(this);
-        button12.addActionListener(this);
-        button13.addActionListener(this);
-        button14.addActionListener(this);
-        button15.addActionListener(this);
+
+        for (int i = 1; i < 16; i++) {       // generate 15 buttons with numbers and add it to button list
+            JButton button = new JButton(String.valueOf(i));
+            button.addActionListener(this);
+            buttonList.add(button);
+        }
+        buttonList.add(blankButton);
 
 
         add(controlPanel, BorderLayout.NORTH);
@@ -69,11 +46,7 @@ public class Spel extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == newGameButton) {
             gameGenerate();
-        }
-
-        if (e.getSource() == button1 || e.getSource() == button2 || e.getSource() == button3 || e.getSource() == button4 || e.getSource() == button5 ||
-                e.getSource() == button6 || e.getSource() == button7 || e.getSource() == button8 || e.getSource() == button9 || e.getSource() == button10 ||
-                e.getSource() == button11 || e.getSource() == button12 || e.getSource() == button13 || e.getSource() == button14 || e.getSource() == button15) {
+        } else if (buttonList.contains(e.getSource())) {
             JButton selectedButton = (JButton) e.getSource();
             movingButton(selectedButton);
         }
