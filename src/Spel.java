@@ -33,7 +33,7 @@ public class Spel extends JFrame implements ActionListener {
             button.addActionListener(this);
             buttonList.add(button);
         }
-        buttonList.add(blankButton);
+        buttonList.add(blankButton);   //blank button is added to list manually
 
 
         add(controlPanel, BorderLayout.NORTH);
@@ -67,56 +67,38 @@ public class Spel extends JFrame implements ActionListener {
         gamePanel.repaint();
     }
 
+    // this "moving-Button" method control the movement of each number button:
+    // using the button list from gameGenerate method in the 4 by 4 game panel, we will have the following matrix of index of the buttons in the list:
+
+    // row/column     0  1  2  3
+    //       0      | 0| 1| 2| 3|
+    //       1      | 4| 5| 6| 7|
+    //       2      | 8| 9|10|11|
+    //       3      |12|13|14|15|
+
+    // the method will get the row and column of the clicked button and the blank button and compare those
+    // if they are the same row then we check their column, if the difference of column is 1 -> they are next to each other and can be swapped
+    // otherwise they are not to be swapped (same logic if it is on the same column, then we check their row)
 
     public void movingButton(JButton selectedButton) {
 
         int buttonIndex = buttonList.indexOf(selectedButton);
+        int buttonIndexRow = buttonIndex / 4;           // every row of the index matrix increased by 4, so in order to get row number of a button, we need to divide by 4
+        int buttonIndexColumn = buttonIndex % 4;        // get column number of a button by get the rest of the index divided to 4
+
         int blankButtonIndex = buttonList.indexOf(blankButton);
+        int blankButtonIndexRow = blankButtonIndex / 4;
+        int blankButtonIndexColumn = blankButtonIndex % 4;
 
-        if (buttonIndex == 0 && (buttonIndex + 1 == blankButtonIndex || buttonIndex + 4 == blankButtonIndex)) {
+        if (buttonIndexRow == blankButtonIndexRow && Math.abs(buttonIndexColumn - blankButtonIndexColumn) == 1) {
+            Collections.swap(buttonList, buttonIndex, blankButtonIndex);    // the swap of buttons happened in the button list
+        } else if (buttonIndexColumn == blankButtonIndexColumn && Math.abs(buttonIndexRow - blankButtonIndexRow) == 1) {
             Collections.swap(buttonList, buttonIndex, blankButtonIndex);
         }
 
-        else if (buttonIndex == 3 && (buttonIndex - 1 == blankButtonIndex || buttonIndex + 4 == blankButtonIndex)) {
-            Collections.swap(buttonList, buttonIndex, blankButtonIndex);
-        }
+        gamePanel.removeAll();    // remove old panel
 
-        else if (buttonIndex == 12 && (buttonIndex + 1 == blankButtonIndex || buttonIndex - 4 == blankButtonIndex)) {
-            Collections.swap(buttonList, buttonIndex, blankButtonIndex);
-        }
-
-        else if (buttonIndex == 15 && (buttonIndex - 1 == blankButtonIndex || buttonIndex - 4 == blankButtonIndex)) {
-            Collections.swap(buttonList, buttonIndex, blankButtonIndex);
-        }
-
-        else if ((buttonIndex == 1 || buttonIndex == 2) &&
-                (buttonIndex + 1 == blankButtonIndex || buttonIndex + 4 == blankButtonIndex || buttonIndex - 1 == blankButtonIndex)) {
-            Collections.swap(buttonList, buttonIndex, blankButtonIndex);
-        }
-
-        else if ((buttonIndex == 4 || buttonIndex == 8) &&
-                (buttonIndex + 1 == blankButtonIndex || buttonIndex + 4 == blankButtonIndex || buttonIndex - 4 == blankButtonIndex)) {
-            Collections.swap(buttonList, buttonIndex, blankButtonIndex);
-        }
-
-        else if ((buttonIndex == 7 || buttonIndex == 11) &&
-                (buttonIndex - 1 == blankButtonIndex || buttonIndex + 4 == blankButtonIndex || buttonIndex - 4 == blankButtonIndex)) {
-            Collections.swap(buttonList, buttonIndex, blankButtonIndex);
-        }
-
-        else if ((buttonIndex == 13 || buttonIndex == 14) &&
-                (buttonIndex - 1 == blankButtonIndex || buttonIndex + 1 == blankButtonIndex || buttonIndex - 4 == blankButtonIndex)) {
-            Collections.swap(buttonList, buttonIndex, blankButtonIndex);
-        }
-
-        else if ((buttonIndex == 5 || buttonIndex == 6 || buttonIndex == 9 || buttonIndex == 10) &&
-                (buttonIndex - 1 == blankButtonIndex || buttonIndex + 1 == blankButtonIndex || buttonIndex + 4 == blankButtonIndex || buttonIndex - 4 == blankButtonIndex)) {
-                Collections.swap(buttonList, buttonIndex, blankButtonIndex);
-        }
-
-        gamePanel.removeAll();
-
-        for (JButton b : buttonList) {
+        for (JButton b : buttonList) {    // readded new buttons to the panel from the new list of buttons
             gamePanel.add(b);
         }
 
