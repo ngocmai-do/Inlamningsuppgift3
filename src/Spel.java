@@ -59,6 +59,10 @@ public class Spel extends JFrame implements ActionListener {
     // this method generate a new game with click of "new game" button, list of buttons is used here together with shuffle to create random order or buttons
     public void gameGenerate() {
         Collections.shuffle(buttonList);
+
+        while (!checkSolvable(buttonList)) {
+            Collections.shuffle(buttonList);
+        }
         gamePanel.removeAll();
         for (JButton b : buttonList) {
             gamePanel.add(b);
@@ -104,6 +108,39 @@ public class Spel extends JFrame implements ActionListener {
 
         gamePanel.revalidate();
         gamePanel.repaint();
+    }
+
+
+    // this method check whether the puzzle is solvable
+    // Principles is from: https://puzzling.stackexchange.com/questions/118080/possible-parity-for-sliding-puzzle
+
+    public boolean checkSolvable(List<JButton> buttonList) {
+        boolean blankButtonRow;
+
+        // checking if the row of the blank button is odd or even row
+        if ((buttonList.indexOf(blankButton) / 4) % 2 == 1) {
+            blankButtonRow = false; //row of blank button is odd
+        } else {
+            blankButtonRow = true;  //row of blank button is even
+        }
+
+        int inversionCount = 0;
+        for (int i = 0; i < buttonList.size(); i++) {
+            if (buttonList.get(i).getText().isEmpty()) {  // skip blank button
+                continue;
+            }
+            for (int x = i + 1; x < buttonList.size(); x++) {
+                if (!buttonList.get(x).getText().isEmpty() && (Integer.parseInt(buttonList.get(i).getText())) > (Integer.parseInt(buttonList.get(x).getText()))) {
+                    inversionCount++;
+                }
+            }
+        }
+
+        if ((!blankButtonRow && inversionCount % 2 == 0) || (blankButtonRow && inversionCount % 2 == 1)) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     void main() {}
