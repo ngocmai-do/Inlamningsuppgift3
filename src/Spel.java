@@ -9,7 +9,7 @@ import java.util.List;
 public class Spel extends JFrame implements ActionListener {
     private JPanel controlPanel = new JPanel();
     private JButton newGameButton = new JButton("New game");
-    private JButton winGameStimulation = new JButton("Secret button");
+    private JButton winGameStimulation = new JButton("Secret button");    // button to stimulate a game that can be easily win
     private JLabel winGameLabel = new JLabel(" ");
 
     private JPanel gamePanel = new JPanel();
@@ -25,6 +25,7 @@ public class Spel extends JFrame implements ActionListener {
         controlPanel.add(winGameStimulation);
         controlPanel.add(winGameLabel);
         newGameButton.addActionListener(this);
+        winGameStimulation.addActionListener(this);
 
         gamePanel.setLayout(new GridLayout(4,4));
 
