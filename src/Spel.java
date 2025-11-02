@@ -9,8 +9,8 @@ import java.util.List;
 public class Spel extends JFrame implements ActionListener {
     private JPanel controlPanel = new JPanel();
     private JButton newGameButton = new JButton("New game");
-    private JButton winGameStimulation = new JButton("Secret button");    // button to stimulate a game that can be easily win
-    private JLabel winGameLabel = new JLabel(" ");
+    private JButton winGameStimulationButton = new JButton("Secret button");    // button to stimulate a game that can be easily win
+
 
     private JPanel gamePanel = new JPanel();
     private JButton blankButton = new JButton("");
@@ -21,12 +21,12 @@ public class Spel extends JFrame implements ActionListener {
     List<JButton> winGameStimulationList = new ArrayList<>();
 
     public Spel() {
-        controlPanel.setLayout(new GridLayout(1, 3));
+        controlPanel.setLayout(new GridLayout(1, 2));
         controlPanel.add(newGameButton);
-        controlPanel.add(winGameStimulation);
-        controlPanel.add(winGameLabel);
+        controlPanel.add(winGameStimulationButton);
+
         newGameButton.addActionListener(this);
-        winGameStimulation.addActionListener(this);
+        winGameStimulationButton.addActionListener(this);
 
         gamePanel.setLayout(new GridLayout(4, 4));
 
@@ -41,11 +41,11 @@ public class Spel extends JFrame implements ActionListener {
             correctButtonList.add(buttonList.get(i));
         }
 
-        for (int i = 0; i < 15; i++) {
+        for (int i = 0; i < 14; i++) {
             winGameStimulationList.add(buttonList.get(i));
         }
-        winGameStimulation.add(blankButton);
-        winGameStimulation.add(buttonList.get(15));
+        winGameStimulationList.add(blankButton);
+        winGameStimulationList.add(buttonList.get(14));
 
         add(controlPanel, BorderLayout.NORTH);
         add(gamePanel, BorderLayout.CENTER);
@@ -63,8 +63,9 @@ public class Spel extends JFrame implements ActionListener {
         } else if (buttonList.contains((JButton) e.getSource())) {
             JButton selectedButton = (JButton) e.getSource();
             movingButton(selectedButton);
-        } else if (e.getSource() == winGameStimulation) {
+        } else if (e.getSource() == winGameStimulationButton) {
             gamePanel.removeAll();
+            buttonList = new ArrayList<>(winGameStimulationList);
             for (JButton b : winGameStimulationList) {
                 gamePanel.add(b);
             }
