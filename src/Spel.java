@@ -17,16 +17,18 @@ public class Spel extends JFrame implements ActionListener {
 
     // all buttons within the game is saved in this button list for ease of generating game and control the movement of each button
     List<JButton> buttonList = new ArrayList<>();
-
+    List<JButton> correctButtonList = new ArrayList<>();
+    List<JButton> winGameStimulationList = new ArrayList<>();
 
     public Spel() {
-        controlPanel.setLayout(new GridLayout(1,3));
+        controlPanel.setLayout(new GridLayout(1, 3));
         controlPanel.add(newGameButton);
         controlPanel.add(winGameStimulation);
         controlPanel.add(winGameLabel);
         newGameButton.addActionListener(this);
+        winGameStimulation.addActionListener(this);
 
-        gamePanel.setLayout(new GridLayout(4,4));
+        gamePanel.setLayout(new GridLayout(4, 4));
 
         for (int i = 1; i < 16; i++) {       // generate 15 buttons with numbers and add it to button list
             JButton button = new JButton(String.valueOf(i));
@@ -35,24 +37,49 @@ public class Spel extends JFrame implements ActionListener {
         }
         buttonList.add(blankButton);   //blank button is added to list manually
 
+        for (int i = 0; i <= 15; i++) {
+            correctButtonList.add(buttonList.get(i));
+        }
+
+        for (int i = 0; i < 15; i++) {
+            winGameStimulationList.add(buttonList.get(i));
+        }
+        winGameStimulation.add(blankButton);
+        winGameStimulation.add(buttonList.get(15));
 
         add(controlPanel, BorderLayout.NORTH);
         add(gamePanel, BorderLayout.CENTER);
 
-        setSize(500,600);
+        setSize(500, 600);
         setLocationRelativeTo(null);
         setVisible(true);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
     }
-    
+
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == newGameButton) {
             gameGenerate();
-        } else if (buttonList.contains(e.getSource())) {
+        } else if (buttonList.contains((JButton) e.getSource())) {
             JButton selectedButton = (JButton) e.getSource();
             movingButton(selectedButton);
+        } else if (e.getSource() == winGameStimulation) {
+            gamePanel.removeAll();
+            for (JButton b : winGameStimulationList) {
+                gamePanel.add(b);
+            }
+            gamePanel.revalidate();
+            gamePanel.repaint();
         }
+    }
+
+    public boolean hasThePlayerWon(List<JButton> correctList) {
+        for (int i = 0; i < correctList.size(); i++) {
+            if (!correctList.get(i).equals(correctButtonList.get(i))) {
+                return false;
+            }
+        }
+        return true;
     }
 
 
@@ -104,8 +131,14 @@ public class Spel extends JFrame implements ActionListener {
 
         gamePanel.revalidate();
         gamePanel.repaint();
+        boolean hasWon = hasThePlayerWon(buttonList);
+        if (hasWon) {
+            JOptionPane.showMessageDialog(null, "Grattis, du vann!");
+        }
     }
 
-    void main() {}
+
+    void main() {
+    }
 
 }
