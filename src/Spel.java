@@ -28,7 +28,7 @@ public class Spel extends JFrame implements ActionListener {
         newGameButton.addActionListener(this);
         winGameStimulationButton.addActionListener(this);
 
-        gamePanel.setLayout(new GridLayout(4,4));
+        gamePanel.setLayout(new GridLayout(4, 4));
 
         for (int i = 1; i < 16; i++) {       // generate 15 buttons with numbers and add it to button list
             JButton button = new JButton(String.valueOf(i));
@@ -50,12 +50,12 @@ public class Spel extends JFrame implements ActionListener {
         add(controlPanel, BorderLayout.NORTH);
         add(gamePanel, BorderLayout.CENTER);
 
-        setSize(500,600);
+        setSize(500, 600);
         setLocationRelativeTo(null);
         setVisible(true);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
     }
-    
+
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == newGameButton) {
@@ -74,21 +74,11 @@ public class Spel extends JFrame implements ActionListener {
         }
     }
 
-    public boolean hasThePlayerWon(List<JButton> correctList) {
-        for (int i = 0; i < correctList.size(); i++) {
-            if (!correctList.get(i).equals(correctButtonList.get(i))) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-
     // this method generate a new game with click of "new game" button, list of buttons is used here together with shuffle to create random order or buttons
     public void gameGenerate() {
         Collections.shuffle(buttonList);
 
-        while (!checkSolvable(buttonList)) {
+        while (!GameUtilities.checkSolvable(buttonList, blankButton)) {
             Collections.shuffle(buttonList);
         }
         gamePanel.removeAll();
@@ -136,45 +126,10 @@ public class Spel extends JFrame implements ActionListener {
 
         gamePanel.revalidate();
         gamePanel.repaint();
-        boolean hasWon = hasThePlayerWon(buttonList);
+        boolean hasWon = GameUtilities.hasThePlayerWon(buttonList, correctButtonList);
         if (hasWon) {
             JOptionPane.showMessageDialog(null, "Grattis, du vann!");
         }
     }
-
-
-    // this method check whether the puzzle is solvable
-    // Principles is from: https://puzzling.stackexchange.com/questions/118080/possible-parity-for-sliding-puzzle
-
-    public boolean checkSolvable(List<JButton> buttonList) {
-        boolean blankButtonRow;
-
-        // checking if the row of the blank button is odd or even row
-        if ((buttonList.indexOf(blankButton) / 4) % 2 == 1) {
-            blankButtonRow = false; //row of blank button is odd
-        } else {
-            blankButtonRow = true;  //row of blank button is even
-        }
-
-        int inversionCount = 0;
-        for (int i = 0; i < buttonList.size(); i++) {
-            if (buttonList.get(i).getText().isEmpty()) {  // skip blank button
-                continue;
-            }
-            for (int x = i + 1; x < buttonList.size(); x++) {
-                if (!buttonList.get(x).getText().isEmpty() && (Integer.parseInt(buttonList.get(i).getText())) > (Integer.parseInt(buttonList.get(x).getText()))) {
-                    inversionCount++;
-                }
-            }
-        }
-
-        if ((!blankButtonRow && inversionCount % 2 == 0) || (blankButtonRow && inversionCount % 2 == 1)) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    void main() {}
 
 }
